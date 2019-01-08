@@ -7,4 +7,7 @@ package github.xusheng.mvc.service;
  * @Version 1.0
  **/
 public interface TestService {
+
+    void doServiceTest();
+
 }
