@@ -154,6 +154,7 @@ public class MyDispatchServlet extends HttpServlet {
                             // 如果使用@MyController，@MyService没有配置value的值，默认使用类名 首字母小写
                             beanName = toLowerFirstLetter(filed.getType().getSimpleName());
                         }
+                        //强制访问,防止private 属性无法访问
                         filed.setAccessible(true);
                         filed.set(entry.getValue(), IOC.get(beanName));
                     }
@@ -174,10 +175,7 @@ public class MyDispatchServlet extends HttpServlet {
         }
 
         for (Map.Entry<String, Object> entry : IOC.entrySet()) {
-//            synchronized (lock) {
-
             Class<?> clazz = entry.getValue().getClass();
-
             if (!clazz.isAnnotationPresent(MyController.class)) {
                 continue;
             }
@@ -199,7 +197,6 @@ public class MyDispatchServlet extends HttpServlet {
                 controllerMaps.put(url, entry.getValue());
                 System.out.println("The " + url + ", Mapped: " + method);
             }
-//            }
         }
     }
 
@@ -261,6 +258,7 @@ public class MyDispatchServlet extends HttpServlet {
         File dir = new File(url.getFile());
         for (File file : dir.listFiles()) {
             if (file.isDirectory()) {
+                //递归扫描所有类信息
                 doScanner(basePackageName + "." + file.getName());
             } else {
                 String className = basePackageName + "." + file.getName().replace(".class", "");
