@@ -125,7 +125,7 @@ public class MyDispatchServlet extends HttpServlet {
             //3.拿到扫描到的类,通过反射机制,实例化,并且放到ioc容器中(k-v  beanName-bean) beanName默认是首字母小写
             doInstance();
             // 4.依赖注入，实现ioc机制
-            doIoc();
+            doDependencyInject();
 
             //5.初始化HandlerMapping(将url和method对应上)
             initHandlerMapping();
@@ -136,7 +136,10 @@ public class MyDispatchServlet extends HttpServlet {
 
     }
 
-    private void doIoc() {
+    /**
+     * 依赖注入
+     */
+    private void doDependencyInject() {
 
         if (IOC.isEmpty()) {
             System.err.println(" doIoc 没有发现可注入的实例");
